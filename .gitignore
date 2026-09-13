@@ -1,0 +1,16 @@
+.env
+*.dll
+*.DLL
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.venv/
+backend/.cache/
+*.db
+*.sqlite3
+.gradle/
+local.properties
+build/
+*/build/
+.idea/
+*.iml
