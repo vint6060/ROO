@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     prop_engine: str = "itu"
     p533_dll_path: str | None = None
     p372_dll_path: str | None = None
+    itur_wrapper_url: str | None = None
     voacap_path: str | None = None
     solar_data_url: str | None = None
     solar_cache_path: Path = Path("backend/.cache/solar.json")

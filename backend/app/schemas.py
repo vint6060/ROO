@@ -30,7 +30,7 @@ class GeometryResponse(BaseModel):
 
 
 class PredictResponse(BaseModel):
-    status: Literal["available", "degraded", "engine_unavailable"]
+    status: Literal["live", "available", "degraded", "engine_unavailable"]
     engine: str
     simulated: bool
     cache_hit: bool

@@ -6,12 +6,18 @@ from .config import get_settings
 from .engines.itu import IturEngine
 from .engines.mock import MockEngine
 from .engines.voacap import VoacapEngine
+from .engines.wrapper import IturWrapperEngine
 from .geometry import Point, calculate_path
 from .schemas import Coordinate, GeometryResponse, PredictRequest, PredictResponse
 from .solar import SolarData
 
 settings = get_settings()
-engine = MockEngine() if settings.prop_engine.lower() == "mock" else IturEngine(settings.p533_dll_path, settings.p372_dll_path)
+if settings.prop_engine.lower() == "mock":
+    engine = MockEngine()
+elif settings.itur_wrapper_url:
+    engine = IturWrapperEngine(settings.itur_wrapper_url)
+else:
+    engine = IturEngine(settings.p533_dll_path, settings.p372_dll_path)
 cache = ForecastCache(settings.forecast_cache_path, settings.forecast_cache_ttl_seconds, settings.forecast_cache_bucket_seconds)
 solar = SolarData(settings.solar_data_url, settings.solar_cache_path)
 voacap = VoacapEngine(settings.voacap_path)
@@ -38,6 +44,8 @@ def path_geometry(tx_lat: float = Query(..., ge=-90, le=90), tx_lon: float = Que
 def noise(frequency_mhz: float = Query(..., gt=0)):
     if isinstance(engine, MockEngine):
         return {"status": "degraded", "engine": engine.name, "simulated": True, "frequency_mhz": frequency_mhz, "noise_db": round(-105 + frequency_mhz, 2), "message": "Simulated P372-style output; not an engineering estimate."}
+    if isinstance(engine, IturWrapperEngine):
+        return {"status": "engine_unavailable", "engine": engine.name, "frequency_mhz": frequency_mhz, "noise_db": None, "message": "Use the Windows wrapper /noise endpoint; no noise estimate was generated locally."}
     return {"status": "engine_unavailable", "engine": "itu-p372", "frequency_mhz": frequency_mhz, "noise_db": None, "message": "P372.dll is unavailable; no noise estimate was generated."}
 
 

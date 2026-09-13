@@ -24,7 +24,7 @@ class IturEngine(PropagationEngine):
 
     def health(self) -> dict:
         available = self.p533 is not None and self.p372 is not None
-        return {"status": "available" if available else "engine_unavailable", "p533_loaded": self.p533 is not None, "p372_loaded": self.p372 is not None, "platform": "Windows native DLLs required"}
+        return {"status": "live" if available else "engine_unavailable", "p533_loaded": self.p533 is not None, "p372_loaded": self.p372 is not None, "platform": "Windows native DLLs required"}
 
     def predict(self, frequencies_mhz: list[float], timestamp: str, distance_km: float, activity: dict) -> EngineResult:
         health = self.health()

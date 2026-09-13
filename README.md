@@ -29,7 +29,9 @@ The API provides `GET /api/health`, `POST /api/predict`, `GET /api/geometry/path
 
 ## Official ITU-R engines
 
-P533.dll and P372.dll are official ITU-R Windows native libraries. Obtain them from the applicable official ITU-R distribution/licensing channel, place them outside this repository, and set `P533_DLL_PATH` and `P372_DLL_PATH` in `.env`. DLL binaries are ignored by Git. Linux CI does not load them. The backend returns `engine_unavailable` with empty prediction values when they are absent; it never substitutes invented propagation numbers.
+P533.dll and P372.dll are official ITU-R Windows native libraries. Obtain them from the applicable official ITU-R distribution/licensing channel, place them outside this repository, and set `P533_DLL_PATH` and `P372_DLL_PATH` in `.env`. DLL binaries are ignored by Git. Linux CI does not load them. The backend returns `engine_unavailable` with empty prediction values when they are absent; it never substitutes invented propagation numbers. See the step-by-step [Windows integration guide](docs/engine-integration-windows.md).
+
+For a Windows host, `ITUR_WRAPPER_URL` selects an HTTP/JSON adapter whose `/health` must report `live` before the Linux backend accepts prediction values. This keeps official DLL loading, vendor data files, and platform-specific Python out of the Linux service.
 
 For UI/test development only, explicitly set `PROP_ENGINE=mock`. Mock responses are marked `degraded` and `simulated` and must not be used for operational or engineering decisions.
 
