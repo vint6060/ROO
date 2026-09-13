@@ -1,0 +1,11 @@
+const assert = require('node:assert/strict');
+const { normalizeUpstream } = require('../server');
+const result = normalizeUpstream({ updatedAt: new Date().toISOString(), stations: [{ name: 'Test', address: 'Street', prices: [{ type: 'АИ-95', value: '61.2' }] }] });
+assert.equal(result.source, 'gdebenz');
+assert.equal(result.stations[0].prices[0].price, 61.2);
+assert.equal(result.status, 'live');
+assert.equal(result.stations[0].prices[0].availability, 'unknown');
+assert.equal(normalizeUpstream({ updatedAt: 'not-a-date', stations: [{ name: 'Test', address: 'Street', prices: [{ type: 'АИ-95', value: '61.2', status: 'есть' }] }] }).stations[0].prices[0].availability, 'available');
+assert.equal(normalizeUpstream({ stations: [] }), null);
+assert.equal(normalizeUpstream({ html: '<body>blocked</body>' }), null);
+console.log('server normalization checks passed');
