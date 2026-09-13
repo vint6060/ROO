@@ -1,18 +1,21 @@
 const API_ENDPOINT = '/api/fuel-prices.json';
+const GDEBENZ_ADAPTER_ENDPOINT = '/api/gdebenz/stations';
 
 const DEMO_DATA = {
   updatedAt: '2026-09-13T12:42:00+05:00',
   stations: [
-    { name: 'Газпромнефть №42', brand: 'ГПН', district: 'Центральный', address: 'ул. Московская, 281', distanceKm: 1.4, updatedAt: '2026-09-13T12:42:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 54.2 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.8 }, { fuel: 'ДТ', label: 'ДТ', price: 68.4 }] },
-    { name: 'ЛУКОЙЛ №101', brand: 'ЛУК', district: 'Верх-Исетский', address: 'ул. Репина, 94', distanceKm: 2.8, updatedAt: '2026-09-13T12:35:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 53.9 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.5 }, { fuel: 'ДТ', label: 'ДТ', price: 67.9 }] },
-    { name: 'Башнефть', brand: 'БН', district: 'Октябрьский', address: 'ул. Восточная, 160', distanceKm: 3.1, updatedAt: '2026-09-13T12:31:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 54.4 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.2 }, { fuel: 'ДТ', label: 'ДТ', price: 68.1 }] },
-    { name: 'Газпромнефть №18', brand: 'ГПН', district: 'Кировский', address: 'ул. Сулимова, 50', distanceKm: 4.6, updatedAt: '2026-09-13T12:27:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 54.1 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.7 }, { fuel: 'ДТ', label: 'ДТ', price: 68.3 }] },
-    { name: 'Татнефть', brand: 'ТН', district: 'Чкаловский', address: 'ул. Щорса, 128', distanceKm: 5.2, updatedAt: '2026-09-13T12:18:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 53.7 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.1 }, { fuel: 'ДТ', label: 'ДТ', price: 67.8 }] },
-    { name: 'Нефтегаз', brand: 'НГ', district: 'Железнодорожный', address: 'ул. Бебеля, 17', distanceKm: 6.4, updatedAt: '2026-09-13T12:11:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 54.0 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.4 }, { fuel: 'ДТ', label: 'ДТ', price: 68.0 }] }
+    { name: 'Газпромнефть №42', brand: 'ГПН', district: 'Центральный', address: 'ул. Московская, 281', lat: 56.824, lon: 60.587, distanceKm: 1.4, updatedAt: '2026-09-13T12:42:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 54.2 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.8 }, { fuel: 'ДТ', label: 'ДТ', price: 68.4 }] },
+    { name: 'ЛУКОЙЛ №101', brand: 'ЛУК', district: 'Верх-Исетский', address: 'ул. Репина, 94', lat: 56.823, lon: 60.554, distanceKm: 2.8, updatedAt: '2026-09-13T12:35:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 53.9 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.5 }, { fuel: 'ДТ', label: 'ДТ', price: 67.9 }] },
+    { name: 'Башнефть', brand: 'БН', district: 'Октябрьский', address: 'ул. Восточная, 160', lat: 56.832, lon: 60.634, distanceKm: 3.1, updatedAt: '2026-09-13T12:31:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 54.4 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.2 }, { fuel: 'ДТ', label: 'ДТ', price: 68.1 }] },
+    { name: 'Газпромнефть №18', brand: 'ГПН', district: 'Кировский', address: 'ул. Сулимова, 50', lat: 56.866, lon: 60.632, distanceKm: 4.6, updatedAt: '2026-09-13T12:27:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 54.1 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.7 }, { fuel: 'ДТ', label: 'ДТ', price: 68.3 }] },
+    { name: 'Татнефть', brand: 'ТН', district: 'Чкаловский', address: 'ул. Щорса, 128', lat: 56.798, lon: 60.611, distanceKm: 5.2, updatedAt: '2026-09-13T12:18:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 53.7 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.1 }, { fuel: 'ДТ', label: 'ДТ', price: 67.8 }] },
+    { name: 'Нефтегаз', brand: 'НГ', district: 'Железнодорожный', address: 'ул. Бебеля, 17', lat: 56.864, lon: 60.563, distanceKm: 6.4, updatedAt: '2026-09-13T12:11:00+05:00', prices: [{ fuel: 'АИ-92', label: 'АИ-92', price: 54.0 }, { fuel: 'АИ-95', label: 'АИ-95', price: 59.4 }, { fuel: 'ДТ', label: 'ДТ', price: 68.0 }] }
   ]
 };
 
-const state = { data: null, fuel: 'all', district: 'all', sort: 'price', query: '' };
+const state = { data: null, fuel: 'all', district: 'all', sort: 'price', query: '', source: 'demo' };
+let map;
+let markersLayer;
 const $ = (selector) => document.querySelector(selector);
 const priceFormat = (value) => value.toFixed(1).replace('.', ',');
 const timeFormat = (value) => new Intl.DateTimeFormat('ru-RU', { hour: '2-digit', minute: '2-digit' }).format(new Date(value));
@@ -25,19 +28,29 @@ function isValidData(data) {
 async function loadData() {
   showState('loading');
   try {
-    const response = await fetch(API_ENDPOINT, { headers: { Accept: 'application/json' } });
+    const response = await fetch(GDEBENZ_ADAPTER_ENDPOINT, { headers: { Accept: 'application/json' } });
     if (!response.ok) throw new Error(`API responded ${response.status}`);
     const apiData = await response.json();
     if (!isValidData(apiData)) throw new Error('API response has an invalid shape');
     state.data = apiData;
+    state.source = 'live';
   } catch (error) {
     // The static demo remains usable without a backend. No credentials are needed.
     state.data = DEMO_DATA;
+    state.source = 'demo';
   }
   setupDistricts();
   renderSummary();
   renderStations();
   $('#updated-at').textContent = `Обновлено сегодня в ${timeFormat(state.data.updatedAt)}`;
+  updateSourceStatus();
+  renderMap();
+}
+
+function updateSourceStatus() {
+  const source = $('#source-status');
+  source.className = `source-status source-${state.source}`;
+  source.innerHTML = `<span class="source-dot"></span><span><strong>${state.source === 'live' ? 'Адаптер подключен' : 'Демо-fallback'}</strong> · gdebenz.ru</span>`;
 }
 
 function showState(name) {
@@ -89,13 +102,32 @@ function renderStations() {
   }).join('');
 }
 
-function clearFilters() { state.fuel = 'all'; state.district = 'all'; state.sort = 'price'; state.query = ''; document.querySelectorAll('.filter-button').forEach((button) => button.classList.toggle('active', button.dataset.fuel === 'all')); $('#district-select').value = 'all'; $('#sort-select').value = 'price'; $('#search-input').value = ''; renderStations(); }
+function renderMap() {
+  if (!window.L || !state.data) return;
+  if (!map) {
+    map = L.map('fuel-map', { scrollWheelZoom: false }).setView([56.8389, 60.6057], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors', maxZoom: 18 }).addTo(map);
+    markersLayer = L.layerGroup().addTo(map);
+  }
+  markersLayer.clearLayers();
+  filteredStations().forEach((station) => {
+    const price = getPrice(station);
+    const markerColor = price.price < 54 ? '#4f9c67' : '#718078';
+    const icon = L.divIcon({ className: 'fuel-marker-wrap', html: `<span class="fuel-marker ${price.price < 54 ? 'marker-low' : 'marker-average'}">${priceFormat(price.price)}</span>`, iconSize: [72, 32], iconAnchor: [36, 16] });
+    const popup = `<strong>${escapeHtml(station.name)}</strong><br>${escapeHtml(station.address)}<br><b>${priceFormat(price.price)} ₽ · ${escapeHtml(price.label)}</b><br><small>${state.source === 'live' ? 'Источник: адаптер gdebenz.ru' : 'Демонстрационные данные · не оферта'}</small>`;
+    L.circleMarker([station.lat, station.lon], { radius: 11, color: '#fff', weight: 3, fillColor: markerColor, fillOpacity: .95 }).bindPopup(popup).addTo(markersLayer);
+    L.marker([station.lat, station.lon], { icon }).bindPopup(popup).addTo(markersLayer);
+  });
+  window.setTimeout(() => map.invalidateSize(), 0);
+}
+
+function clearFilters() { state.fuel = 'all'; state.district = 'all'; state.sort = 'price'; state.query = ''; document.querySelectorAll('.filter-button').forEach((button) => button.classList.toggle('active', button.dataset.fuel === 'all')); $('#district-select').value = 'all'; $('#sort-select').value = 'price'; $('#search-input').value = ''; renderStations(); renderMap(); }
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.filter-button').forEach((button) => button.addEventListener('click', () => { state.fuel = button.dataset.fuel; document.querySelectorAll('.filter-button').forEach((item) => item.classList.toggle('active', item === button)); renderStations(); }));
-  $('#district-select').addEventListener('change', (event) => { state.district = event.target.value; renderStations(); });
-  $('#sort-select').addEventListener('change', (event) => { state.sort = event.target.value; renderStations(); });
-  $('#search-input').addEventListener('input', (event) => { state.query = event.target.value.trim(); renderStations(); });
+  document.querySelectorAll('.filter-button').forEach((button) => button.addEventListener('click', () => { state.fuel = button.dataset.fuel; document.querySelectorAll('.filter-button').forEach((item) => item.classList.toggle('active', item === button)); renderStations(); renderMap(); }));
+  $('#district-select').addEventListener('change', (event) => { state.district = event.target.value; renderStations(); renderMap(); });
+  $('#sort-select').addEventListener('change', (event) => { state.sort = event.target.value; renderStations(); renderMap(); });
+  $('#search-input').addEventListener('input', (event) => { state.query = event.target.value.trim(); renderStations(); renderMap(); });
   $('#clear-button').addEventListener('click', clearFilters);
   $('#retry-button').addEventListener('click', loadData);
   loadData();
