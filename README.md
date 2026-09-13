@@ -51,3 +51,7 @@ Open `android/` as the Gradle project or run `./gradlew :app:assembleDebug` wher
 - The mock engine is deterministic simulated output only.
 - An Android APK build may be unavailable in environments without an Android SDK/Gradle distribution.
 - The Android module is a committed scaffold; runtime MapLibre styling, full chart rendering, and production WorkManager scheduling require an Android build/device pass.
+
+## Оставшиеся шаги
+
+Подробный план завершения Android-клиента, backend deployment, ITU-R/VOACAP интеграции, тестирования и CI: [implementation roadmap](docs/implementation-roadmap.md).
