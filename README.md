@@ -1,13 +1,42 @@
-# ROO
+# Fuelwatch EKB
 
-Starter project scaffold for future implementation.
+Адаптивная статическая панель мониторинга цен на бензин на АЗС Екатеринбурга.
+Проект работает без сборщика и внешних зависимостей.
 
-## Structure
+## Запуск
 
-- `src/` - application or library source code
-- `tests/` - automated tests
-- `docs/` - project documentation
+Из корня репозитория запустите простой статический сервер:
 
-## Development
+```bash
+python3 -m http.server 8000 --directory src
+```
 
-Project-specific setup and usage instructions will be added as the implementation takes shape.
+Затем откройте <http://localhost:8000>.
+
+## Данные и API
+
+Клиент сначала запрашивает публичный относительный endpoint
+`/api/fuel-prices.json`. Если endpoint недоступен, интерфейс использует встроенный
+набор демонстрационных данных, поэтому для локального запуска не нужны ключи или
+секреты. Формат ответа API:
+
+```json
+{
+  "updatedAt": "2026-09-13T12:00:00Z",
+  "stations": []
+}
+```
+
+Каждая АЗС содержит `name`, `brand`, `district`, `address`, `distanceKm`,
+`updatedAt` и массив `prices` с полями `fuel`, `label`, `price`.
+
+## Проверки
+
+```bash
+node --check src/app.js
+git diff --check
+```
+
+Данные в демо-режиме не являются официальной котировкой. Для production нужно
+подключить проверенный backend/API через относительный endpoint, настроить его
+обновление и отдельно определить политику происхождения и актуальности данных.

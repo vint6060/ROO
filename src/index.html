@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#071d1a">
+    <title>Fuelwatch EKB — цены на АЗС</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Fuelwatch EKB, на главную">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>FUELWATCH <em>EKB</em></span>
+        </a>
+        <div class="topbar-meta">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span>Екатеринбург · UTC+5</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="page-title">
+          <div class="hero-copy">
+            <p class="eyebrow">Мониторинг рынка · 13 сентября 2026</p>
+            <h1 id="page-title">Заправляйтесь<br><span>с умом.</span></h1>
+            <p class="hero-intro">Сравнивайте актуальные цены на топливо<br class="desktop-only"> на АЗС Екатеринбурга рядом с вами.</p>
+          </div>
+          <div class="hero-note">
+            <span class="note-icon" aria-hidden="true">i</span>
+            <p><strong>Данные для ориентира</strong><br>Демонстрационные значения<br>не являются официальной котировкой.</p>
+          </div>
+        </section>
+
+        <section class="summary-grid" aria-label="Сводка по ценам">
+          <article class="summary-card summary-card-featured">
+            <div class="card-label"><span class="fuel-pip fuel-92"></span> АИ-92 <span class="trend trend-up">↗ 0,8%</span></div>
+            <div class="metric-row"><strong id="avg-price">—</strong><span>₽ / литр</span></div>
+            <p>Средняя цена по городу</p>
+            <div class="sparkline" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="summary-card">
+            <div class="card-label"><span class="fuel-pip fuel-95"></span> АИ-95</div>
+            <div class="metric-row"><strong id="low-price">—</strong><span class="metric-unit">₽ / литр</span></div>
+            <p>Минимальная цена</p>
+            <div class="card-footer"><span id="low-price-station">Загрузка...</span><span class="arrow">↗</span></div>
+          </article>
+          <article class="summary-card">
+            <div class="card-label"><span class="fuel-pip fuel-diesel"></span> ДТ</div>
+            <div class="metric-row"><strong id="station-count">—</strong><span class="metric-unit">АЗС</span></div>
+            <p>В мониторинге сейчас</p>
+            <div class="card-footer"><span class="status-good"><span></span> Данные доступны</span></div>
+          </article>
+        </section>
+
+        <section class="controls-section" aria-label="Фильтры и поиск">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Обзор предложений</p>
+              <h2>Цены на АЗС</h2>
+            </div>
+            <div class="updated-at" aria-live="polite"><span class="refresh-icon">↻</span> <span id="updated-at">Проверяем обновление...</span></div>
+          </div>
+          <div class="controls">
+            <div class="fuel-tabs" role="group" aria-label="Тип топлива">
+              <button class="filter-button active" data-fuel="all" type="button">Все виды</button>
+              <button class="filter-button" data-fuel="АИ-92" type="button">АИ-92</button>
+              <button class="filter-button" data-fuel="АИ-95" type="button">АИ-95</button>
+              <button class="filter-button" data-fuel="ДТ" type="button">Дизель</button>
+            </div>
+            <label class="search-box">
+              <span aria-hidden="true">⌕</span>
+              <input id="search-input" type="search" placeholder="Поиск по АЗС или району" autocomplete="off">
+            </label>
+            <label class="select-box">
+              <span class="sr-only">Район</span>
+              <select id="district-select">
+                <option value="all">Все районы</option>
+              </select>
+            </label>
+            <label class="select-box sort-box">
+              <span class="sr-only">Сортировка</span>
+              <select id="sort-select">
+                <option value="price">Сначала дешевле</option>
+                <option value="distance">Ближе к центру</option>
+                <option value="updated">Недавно обновлены</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <section class="stations-section" aria-label="Список автозаправочных станций">
+          <div id="loading-state" class="state-panel" hidden><span class="loader"></span><strong>Загружаем цены</strong><span>Собираем данные по АЗС Екатеринбурга...</span></div>
+          <div id="error-state" class="state-panel state-error" hidden><strong>Не удалось загрузить данные</strong><span>Проверьте соединение или попробуйте снова.</span><button id="retry-button" class="outline-button" type="button">Повторить</button></div>
+          <div id="empty-state" class="state-panel" hidden><strong>Ничего не нашли</strong><span>Измените фильтры или попробуйте другой запрос.</span><button id="clear-button" class="outline-button" type="button">Сбросить фильтры</button></div>
+          <div class="table-head" aria-hidden="true"><span>АЗС</span><span>Район</span><span>Расстояние</span><span>Цена / литр</span><span>Обновлено</span></div>
+          <div id="station-list" class="station-list" aria-live="polite"></div>
+        </section>
+      </main>
+
+      <footer class="footer"><span>FUELWATCH EKB · DEMO MODE</span><span>Источник данных: локальный демонстрационный набор</span></footer>
+    </div>
+    <script src="app.js" defer></script>
+  </body>
+</html>
